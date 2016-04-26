@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
@@ -16,12 +20,13 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
     private Crime mCrime;
 
     private EditText mTitleField;
+    private Button mDateButton;
+    private CheckBox mSolvedCheckbox;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCrime = new Crime();
-
     }
 
     @Nullable
@@ -45,6 +50,21 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        mDateButton = (Button) v.findViewById(R.id.crime_date);
+        DateFormat df = new DateFormat();
+
+
+        mDateButton.setText(df.format("EEEE, LLL d, yyyy", mCrime.getDate()));
+        mDateButton.setEnabled(false);
+
+        mSolvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mCrime.setSolved(isChecked);
             }
         });
 
